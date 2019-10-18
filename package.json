@@ -7,7 +7,8 @@
     "dev": "nodemon --watch \"src/\" --exec \"ts-node src/entry.ts\" -e ts",
     "test": "jest --no-cache",
     "build": "tsc",
-    "prod": "npm run build && node dist/entry.js"
+    "prod": "npm install && npm run build && node dist/entry.js",
+    "start": "npm run prod"
   },
   "author": "",
   "license": "ISC",
