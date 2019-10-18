@@ -3,7 +3,7 @@ import { AUTH_ROLES, IAuth, AuthModel } from '../models/AuthModel';
 
 describe('User model', () => {
   beforeAll(async () => {
-    jest.setTimeout(30000);
+    jest.setTimeout(60000);
     await mongoConnector();
   });
 

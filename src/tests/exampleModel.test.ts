@@ -3,7 +3,7 @@ import Example, { IExample } from '../models/ExampleModel';
 
 describe('User model', () => {
   beforeAll(async () => {
-    jest.setTimeout(30000);
+    jest.setTimeout(300000);
     await mongoConnector();
   });
 
