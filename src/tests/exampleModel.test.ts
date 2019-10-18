@@ -1,9 +1,5 @@
-import { resolve } from "path";
-import { config } from "dotenv";
-config({ path: resolve(__dirname, "../../.env") });
-
-import { mongoConnector, mongoDisconnector } from '../config/mongoConfig';
-import Example, { IExample } from '../models/exampleModel';
+import { mongoConnector, mongoDisconnector } from '../config/MongoConfig';
+import Example, { IExample } from '../models/ExampleModel';
 
 describe('User model', () => {
   beforeAll(async () => {
