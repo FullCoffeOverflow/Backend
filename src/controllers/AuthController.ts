@@ -42,7 +42,7 @@ const AuthController = {
 
   changePassword: async (req: Request, res: Response) => {
     //Get ID from JWT
-    const id = res.locals.jwtPayload.userId;
+    const id = res.locals.jwtPayload.authId;
 
     //Get parameters from the body
     const { oldPassword, newPassword } = req.body;
