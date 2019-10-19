@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --watch \"src/\" --exec \"ts-node src/entry.ts\" -e ts",
-    "test": "jest --no-cache --runInBand",
+    "test": "jest --no-cache",
     "build": "tsc",
     "prod": "npm install && npm run build && node dist/entry.js",
     "start": "npm run prod"
