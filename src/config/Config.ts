@@ -16,10 +16,16 @@ if (process.env.JWT_SECRET === undefined)
   throw new Error("JWT_SECRET is required in process.env variables. Check the .env file needed.");
 JWT_SECRET = process.env.JWT_SECRET;
 
+let SENDGRID_KEY: string;
+if (process.env.SENDGRID_KEY === undefined)
+  throw new Error("SENDGRID_KEY is required in process.env variables. Check the .env file needed.");
+SENDGRID_KEY = process.env.SENDGRID_KEY;
+
 const configs = {
   MONGO_URI,
   PORT,
-  JWT_SECRET
+  JWT_SECRET,
+  SENDGRID_KEY
 }
 
 export default configs;
