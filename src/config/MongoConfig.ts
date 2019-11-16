@@ -1,18 +1,15 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-import configs from "./Config";
+import configs from './Config';
 
-const mongoConnector = async () => {
-    console.log(`Trying to connect to MongoDB server: ${configs.MONGO_URI}`)
-    await mongoose.connect(configs.MONGO_URI, {useNewUrlParser: true})
+const mongoConnector = async (): Promise<void> => {
+    console.log(`Trying to connect to MongoDB server: ${configs.MONGO_URI}`);
+    await mongoose.connect(configs.MONGO_URI, { useNewUrlParser: true });
 };
 
-const mongoDisconnector = async () => {
-    console.log(`Trying to disconnect from MongoDB server: ${configs.MONGO_URI}`)
+const mongoDisconnector = async (): Promise<void> => {
+    console.log(`Trying to disconnect from MongoDB server: ${configs.MONGO_URI}`);
     await mongoose.disconnect();
-}
-
-export {
-    mongoConnector,
-    mongoDisconnector
 };
+
+export { mongoConnector, mongoDisconnector };

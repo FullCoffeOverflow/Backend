@@ -1,37 +1,40 @@
-import sgMail from "@sendgrid/mail"
+import sgMail from '@sendgrid/mail';
 
-import configs from "../config/Config"
+import { ClientResponse } from '@sendgrid/client/src/response';
+
+type EmailResponse = ClientResponse;
+
+import configs from '../config/Config';
 
 sgMail.setApiKey(configs.SENDGRID_KEY);
 
-interface IEmail {
-    to: string,
-    from: string,
-    subject: string,
-    content: string
-}
+type Email = {
+    to: string;
+    from: string;
+    subject: string;
+    content: string;
+};
 
-const enviaEmail = async (email: IEmail) => {
-
+const enviaEmail = async (email: Email): Promise<number> => {
     const msg = {
         to: email.to,
         from: email.from,
         subject: email.subject,
         text: email.content,
-        html: '<strong>' + email.content + '<strong>'
-    }
+        html: '<strong>' + email.content + '<strong>',
+    };
 
     try {
-        console.log('Sending an email to ' + email.to + ' ...')
+        console.log('Sending an email to ' + msg.to + ' ...');
         const response = await sgMail.send(msg);
-        console.log('Response from SendGrid: ' + response[0].statusMessage)
+        const statusCode = response[0].statusCode;
+        console.log('Response from SendGrid: ' + response[0].statusMessage);
+        return statusCode;
     } catch (err) {
-        console.log('Error while sending an email!')
-        throw err
-    }
-}
+        console.log('Error while sending an email!');
 
-export {
-    IEmail,
-    enviaEmail
-}
+        throw err;
+    }
+};
+
+export { Email, EmailResponse, enviaEmail };
