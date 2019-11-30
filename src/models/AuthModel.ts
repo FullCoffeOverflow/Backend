@@ -1,56 +1,52 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 enum AUTH_ROLES {
-  USUARIO = "USUARIO",
-  BARBEIRO = "BARBEIRO",
-  ADMIN = "ADMIN"
+    USUARIO = 'USUARIO',
+    BARBEIRO = 'BARBEIRO',
+    ADMIN = 'ADMIN',
 }
 
-interface IAuth extends Document {
-  email: string,
-  password: string,
-  created_date: Date,
-  role: AUTH_ROLES
+interface AuthModel extends Document {
+    email: string;
+    password: string;
+    createdDate: Date;
+    role: AUTH_ROLES;
 }
 
 const AuthSchema = new Schema({
-  email: {
-    type: String,
-    required: 'Enter a email.',
-    unique: true
-  },
-  password: {
-    type: String,
-    required: 'Enter a password.'
-  },
-  created_date: {
-    type: Date,
-    default: Date.now
-  },
-  role: {
-    type: AUTH_ROLES,
-    required: 'Enter a proper role.'
-  }
+    email: {
+        type: String,
+        required: 'Enter a email.',
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: 'Enter a password.',
+    },
+    createdDate: {
+        type: Date,
+        default: Date.now,
+    },
+    role: {
+        type: AUTH_ROLES,
+        required: 'Enter a proper role.',
+    },
 });
 
-const AuthModel = mongoose.model<IAuth>('Auth', AuthSchema);
+const AuthCollection = mongoose.model<AuthModel>('Auth', AuthSchema);
 
-const Auth = {
-  findByEmail: (email: string): Promise<IAuth> => {
-    return AuthModel.findOne({ email }).then()
-  },
-  findById: (id: any): Promise<IAuth> => {
-    return AuthModel.findById(id).then();
-  },
-  save: (auth: IAuth): Promise<IAuth> => {
-    return auth.save().then()
-  }
-}
-
-export {
-  AUTH_ROLES,
-  IAuth,
-  AuthModel
+const AuthActions = {
+    findByEmail: (email: string): Promise<AuthModel> => {
+        return AuthCollection.findOne({ email }).then();
+    },
+    findById: (id: string): Promise<AuthModel> => {
+        return AuthCollection.findById(id).then();
+    },
+    save: (auth: AuthModel): Promise<AuthModel> => {
+        return auth.save().then();
+    },
 };
 
-export default Auth;
+export { AUTH_ROLES, AuthModel, AuthCollection };
+
+export default AuthActions;

@@ -1,36 +1,36 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface IExample extends Document {
-    firstName: string,
-    lastName: string,
-    email: string,
-    company: string,
-    phone: number,
-    created_date: Date
+export interface ExampleModel extends Document {
+    firstName: string;
+    lastName: string;
+    email: string;
+    company: string;
+    phone: number;
+    createdDate: Date;
 }
 
 const ExampleSchema = new Schema({
     firstName: {
         type: String,
-        required: 'Enter a first name'
+        required: 'Enter a first name',
     },
     lastName: {
         type: String,
-        required: 'Enter a last name'
+        required: 'Enter a last name',
     },
     email: {
-        type: String            
+        type: String,
     },
     company: {
-        type: String            
+        type: String,
     },
     phone: {
-        type: Number            
+        type: Number,
     },
-    created_date: {
+    createdDate: {
         type: Date,
-        default: Date.now
-    }
+        default: Date.now,
+    },
 });
 
-export default mongoose.model<IExample>('Example', ExampleSchema);
+export default mongoose.model<ExampleModel>('Example', ExampleSchema);
