@@ -28,10 +28,10 @@ describe('User model', () => {
         }
     });
 
-    afterAll(async () => {
-        await Example.deleteMany({ email: 'test@example.com' });
+    /*afterAll(async () => {
+        //await Example.deleteMany({ email: 'test@example.com' });
         await mongoose.disconnect();
-    });
+    });*/
 
     it('Should save a user', async () => {
         expect.assertions(5);
