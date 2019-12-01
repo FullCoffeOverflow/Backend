@@ -55,6 +55,7 @@
     "typescript": "^3.6.3"
   },
   "jest": {
+    "preset": "@shelf/jest-mongodb",
     "transform": {
       "^.+\\.ts$": "ts-jest"
     },
@@ -67,5 +68,8 @@
       "json",
       "node"
     ]
+  },
+  "devDependencies": {
+    "@shelf/jest-mongodb": "^1.1.3"
   }
 }
