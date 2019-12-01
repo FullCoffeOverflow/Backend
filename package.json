@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --watch \"src/\" --exec \"ts-node src/entry.ts\" -e ts",
+    "start": "npm run serve",
+    "serve": "node dist/entry.js",
     "test": "jest --no-cache",
-    "build": "tsc",
-    "prod": "npm install && npm run build --max_old_space_size=4096 && node dist/entry.js",
-    "start": "npm run prod"
+    "build-ts": "tsc",
+    "postinstall": "npm run build-ts --max_old_space_size=4096",
+    "dev": "nodemon --watch \"src/\" --exec \"ts-node src/entry.ts\" -e ts"
   },
   "author": "",
   "license": "ISC",
