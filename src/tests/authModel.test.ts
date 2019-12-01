@@ -1,18 +1,8 @@
-//import { mongoConnector, mongoDisconnector } from '../config/MongoConfig';
-
 import mongoose from 'mongoose';
 
 import { AUTH_ROLES, AuthModel, AuthCollection } from '../models/AuthModel';
 
 describe('User model', () => {
-    /*beforeAll(async () => {
-        await mongoConnector();
-    });
-
-    afterAll(async () => {
-        await mongoDisconnector();
-    });*/
-
     beforeAll(async () => {
         const mongoUrl = process.env.MONGO_URL;
         if (mongoUrl == undefined) {
@@ -27,11 +17,6 @@ describe('User model', () => {
             });
         }
     });
-
-    /*afterAll(async () => {
-        //await Example.deleteMany({ email: 'test@example.com' });
-        await mongoose.disconnect();
-    });*/
 
     it('Should save a user', async () => {
         expect.assertions(5);
