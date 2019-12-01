@@ -1,13 +1,31 @@
-import { mongoConnector, mongoDisconnector } from '../config/MongoConfig';
+//import { mongoConnector, mongoDisconnector } from '../config/MongoConfig';
+
+import mongoose from 'mongoose';
+
 import { AUTH_ROLES, AuthModel, AuthCollection } from '../models/AuthModel';
 
 describe('User model', () => {
-    beforeAll(async () => {
+    /*beforeAll(async () => {
         await mongoConnector();
     });
 
     afterAll(async () => {
         await mongoDisconnector();
+    });*/
+
+    beforeAll(async () => {
+        const mongoUrl = process.env.MONGO_URL;
+        if (mongoUrl == undefined) {
+            console.error('process.env.MONGO_URL is undefined');
+            process.exit(1);
+        } else {
+            await mongoose.connect(mongoUrl, { useNewUrlParser: true, useCreateIndex: true }, err => {
+                if (err) {
+                    console.error(err);
+                    process.exit(1);
+                }
+            });
+        }
     });
 
     it('Should save a user', async () => {

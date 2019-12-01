@@ -1,8 +1,10 @@
-import { mongoConnector, mongoDisconnector } from '../config/MongoConfig';
+//import { mongoConnector, mongoDisconnector } from '../config/MongoConfig';
 import Example, { ExampleModel } from '../models/ExampleModel';
 
+import mongoose from 'mongoose';
+
 describe('User model', () => {
-    beforeAll(async () => {
+    /*beforeAll(async () => {
         await mongoConnector();
     });
 
@@ -10,6 +12,21 @@ describe('User model', () => {
         await mongoDisconnector();
 
         await Example.deleteMany({ email: 'test@example.com' });
+    });*/
+
+    beforeAll(async () => {
+        const mongoUrl = process.env.MONGO_URL;
+        if (mongoUrl == undefined) {
+            console.error('process.env.MONGO_URL is undefined');
+            process.exit(1);
+        } else {
+            await mongoose.connect(mongoUrl, { useNewUrlParser: true, useCreateIndex: true }, err => {
+                if (err) {
+                    console.error(err);
+                    process.exit(1);
+                }
+            });
+        }
     });
 
     it('Should save a user', async () => {
