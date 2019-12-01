@@ -45,6 +45,9 @@ const AuthActions = {
     save: (auth: AuthModel): Promise<AuthModel> => {
         return auth.save().then();
     },
+    delete: (id: string): Promise<void> => {
+        return AuthCollection.findByIdAndDelete(id).then();
+    }
 };
 
 export { AUTH_ROLES, AuthModel, AuthCollection };
