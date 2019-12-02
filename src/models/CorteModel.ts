@@ -15,6 +15,7 @@ interface CorteModel extends Document {
     fotosId: [string];
     avalicao: number;
     status: CORTE_STATUS;
+    horarioCorte: Date;
 }
 
 const CorteSchema = new Schema({
@@ -37,6 +38,9 @@ const CorteSchema = new Schema({
     status: {
         type: CORTE_STATUS,
     },
+    horarioCorte: {
+        type: Date,
+    }
 });
 
 const CorteCollection = mongoose.model<CorteModel>('Corte', CorteSchema);
@@ -55,6 +59,15 @@ const CorteActions = {
         console.log(usuario);
 
         return CorteCollection.find({ usuarioId: usuario.id }).then();
+    },
+    findByStatus:(status: string): Promise<CorteModel> => {
+        return CorteCollection.find({ status: status }).then();
+    },
+    finfByBarbeiroEStatus:(status: string, barbeiroId: string): Promise<CorteModel> => {
+        return CorteCollection.find({status: status}).find({barbeiroId: barbeiroId}).then()
+    },
+    finfByUsuarioEStatus:(status: string, usuarioId: string): Promise<CorteModel> => {
+        return CorteCollection.find({status: status}).find({usuarioId: usuarioId}).then()
     },
     save: (corte: CorteModel): Promise<CorteModel> => {
         return corte.save().then();
