@@ -5,6 +5,8 @@ import BarbeiroController from '../controllers/BarbeiroController';
 
 const router = Router();
 
+//nada, somente algo pra rodar o teste
+
 router.get('/', BarbeiroController.retornar);
 router.post('/cadastro', BarbeiroController.cadastrar);
 router.get('/:barbeiroId', BarbeiroController.retornarPorId);
