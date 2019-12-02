@@ -34,24 +34,6 @@ const CorteController = {
 
         //Falta verificar o conflito de horários
         res.status(200).json(savedCorte);
-
-        const barbeiro = await Barbeiro.findById(barbeiroId);
-        const usuario = await Usuario.findById(usuarioId);
-
-        const feedbackEmail: Email = {
-            to: usuarioId.email,
-            from: 'no-reply-fco@fco.com.br',
-            subject: 'Novo Agendamento',
-            content: `
-                Caro ${usuario.name}, 
-                Você realizou um agendamento pelo aplicativo El Bigodon <br>
-                com o barbeiro  ${barbeiro.name}.
-                <br>
-                Respeitosamente,<br>
-                Equipe do Full Coffee Overflow
-            `,
-        };
-        await enviaEmail(feedbackEmail);
     },
     retornarPorId: async (req: Request, res: Response): Promise<void> => {
         const { corteId } = req.params;
@@ -79,11 +61,15 @@ const CorteController = {
 
         const cortes = await Corte.finfByUsuarioEStatus(status, usuarioId);
 
-        res.status(200).json(cortes);
-    },
+        const promises = cortes.map(async corte => await Barbeiro.findById(corte.barbeiroId));
+
+        const response = await Promise.all(promises).then();
+
+        res.status(200).json({response, cortes});
+    },  
     
     atualizarPorId: async (req: Request, res: Response): Promise<void> => {
-        const { avaliacao, status } = req.body;
+        const { avaliacao, status} = req.body;
         const { corteId } = req.params;
 
         const corte = await Corte.findById(corteId);
@@ -98,6 +84,19 @@ const CorteController = {
 
         res.status(200).json(savedCorte);
     },
+    adicionaFoto: async (req: Request, res: Response): Promise<void> => {
+        const { foto } = req.body;
+        const { corteId } = req.params;
+
+        const corte = await Corte.findById(corteId);
+        
+        corte.fotosId.push(foto);
+
+        const savedCorte = await Corte.save(corte);
+
+        res.status(200).json(savedCorte);
+    },
+
 };
 
 export default CorteController;

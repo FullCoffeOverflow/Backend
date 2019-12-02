@@ -3,11 +3,11 @@ import mongoose, { Schema, Document } from 'mongoose';
 import Auth from './AuthModel';
 import Usuario from './UsuarioModel';
 
-enum CORTE_STATUS {
-    AGUARDANDO = 'AGUARDANDO',
-    FINALIZADO = 'FINALIZADO',
-    USUARIO_FALTOU = 'USUARIO_FALTOU',
-}
+    enum CORTE_STATUS {
+        AGUARDANDO = 'AGUARDANDO',
+        FINALIZADO = 'FINALIZADO',
+        USUARIO_FALTOU = 'USUARIO_FALTOU',
+    }
 
 interface CorteModel extends Document {
     barbeiroId: string;
@@ -66,7 +66,7 @@ const CorteActions = {
     finfByBarbeiroEStatus:(status: string, barbeiroId: string): Promise<CorteModel> => {
         return CorteCollection.find({status: status}).find({barbeiroId: barbeiroId}).then()
     },
-    finfByUsuarioEStatus:(status: string, usuarioId: string): Promise<CorteModel> => {
+    finfByUsuarioEStatus:(status: string, usuarioId: string): Promise<CorteModel[]> => {
         return CorteCollection.find({status: status}).find({usuarioId: usuarioId}).then()
     },
     save: (corte: CorteModel): Promise<CorteModel> => {
