@@ -11,5 +11,6 @@ router.get('/barbeiro/:barbeiroId/status/:status', CorteController.retornarPorBa
 router.get('/usuario/:usuarioId/status/:status', CorteController.retornarPorUsuarioEStatus);
 router.post('/newcorte', CorteController.adicionar);
 router.put('/:corteId', CorteController.atualizarPorId);
+router.put('/foto/:corteId', CorteController.adicionaFoto)
 
 export default router;
