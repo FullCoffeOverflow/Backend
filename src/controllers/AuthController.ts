@@ -11,21 +11,25 @@ const AuthController = {
         //Check if username and password are set
         const { email, password } = req.body;
         if (!(email && password)) {
-            res.status(400).send();
+            res.status(400).json("Wrong email or password");
         }
 
         //Get user from database
         let auth: AuthModel;
         try {
             auth = await Auth.findByEmail(email);
+            if(auth == undefined){
+                throw new Error('User not registered');
+            }
         } catch (error) {
-            res.status(401).send();
+            console.log(error.message);
+            res.status(401).json("User not registered");
             return;
         }
 
         const hasSamePassword = await crypto.comparing(password, auth.password);
         if (!hasSamePassword) {
-            res.status(401).send();
+            res.status(401).json("Wrong password");
             return;
         }
 
@@ -41,7 +45,7 @@ const AuthController = {
         );
 
         //Send the jwt in the response
-        res.send(token);
+        res.status(200).json({ token });
     },
 
     changePassword: async (req: Request, res: Response): Promise<void> => {
@@ -51,7 +55,7 @@ const AuthController = {
         //Get parameters from the body
         const { oldPassword, newPassword } = req.body;
         if (!(oldPassword && newPassword)) {
-            res.status(400).send();
+            res.status(400).json("Please enter new and old psswords");
         }
 
         //Get user from the database
@@ -59,14 +63,14 @@ const AuthController = {
         try {
             auth = await Auth.findById(id);
         } catch (id) {
-            res.status(401).send();
+            res.status(401).json("User not in database");
             return;
         }
 
         //Check if old password matchs
         const hasSamePassword = await crypto.comparing(oldPassword, auth.password);
         if (!hasSamePassword) {
-            res.status(401).send();
+            res.status(401).json("Password does not match");
             return;
         }
 
@@ -75,7 +79,7 @@ const AuthController = {
         const savedAuth = await Auth.save(auth);
         console.log(`Saved new password for ${savedAuth.email}`);
 
-        res.status(204).send();
+        res.status(204).json("Done!");
     },
 };
 
