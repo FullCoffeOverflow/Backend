@@ -60,13 +60,16 @@ const CorteActions = {
 
         return CorteCollection.find({ usuarioId: usuario.id }).then();
     },
-    findByStatus:(status: string): Promise<CorteModel> => {
+    findByBarbeiro: async (barbeiroId: string): Promise<[CorteModel]> => {
+        return CorteCollection.find({ barbeiroId }).then();
+    },
+    findByStatus: (status: string): Promise<CorteModel> => {
         return CorteCollection.find({ status: status }).then();
     },
-    finfByBarbeiroEStatus:(status: string, barbeiroId: string): Promise<CorteModel> => {
+    finfByBarbeiroEStatus: (status: string, barbeiroId: string): Promise<CorteModel> => {
         return CorteCollection.find({status: status}).find({barbeiroId: barbeiroId}).then()
     },
-    finfByUsuarioEStatus:(status: string, usuarioId: string): Promise<CorteModel[]> => {
+    finfByUsuarioEStatus: (status: string, usuarioId: string): Promise<CorteModel[]> => {
         return CorteCollection.find({status: status}).find({usuarioId: usuarioId}).then()
     },
     save: (corte: CorteModel): Promise<CorteModel> => {
