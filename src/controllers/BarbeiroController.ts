@@ -16,7 +16,7 @@ const BarbeiroController = {
         } catch (err) {
             console.log('Error while hashing the password.');
             console.log(err.msg);
-            res.sendStatus(500);
+            res.status(500).json("Error error error");
             return;
         }
 
@@ -56,13 +56,13 @@ const BarbeiroController = {
             console.log('Error while validating fields.');
             console.log(err.message);
             await Auth.delete(savedAuth.id);
-            res.sendStatus(400);
+            res.status(400).json("Error while validating fields");
             return;
         }
 
         console.log(savedBarbeiro.toJSON);
 
-        res.sendStatus(200);
+        res.status(200).json(savedBarbeiro);
 
         const feedbackEmail: Email = {
             to: savedAuth.email,
@@ -79,14 +79,14 @@ const BarbeiroController = {
     retornar: async (req: Request, res: Response): Promise<void> => {
         const barbeiros = await Barbeiro.findAll();
 
-        res.json(barbeiros);
+        res.status(200).json(barbeiros);
     },
     retornarPorId: async (req: Request, res: Response): Promise<void> => {
         const { barbeiroId } = req.params;
 
         const barbeiro = await Barbeiro.findById(barbeiroId);
 
-        res.json(barbeiro);
+        res.status(200).json(barbeiro);
     },
     deletarPorId: async (req: Request, res: Response): Promise<void> => {
         const { barbeiroId } = req.params;
@@ -96,7 +96,7 @@ const BarbeiroController = {
         await Auth.delete(barbeiro.authId);
         await Barbeiro.delete(barbeiroId);
 
-        res.json(barbeiro);
+        res.status(200).json(barbeiro);
     },
     atualizarPorId: async (req: Request, res: Response): Promise<void> => {
         const { password, name, birthdate, cep, phone, number, description } = req.body;
@@ -107,7 +107,7 @@ const BarbeiroController = {
         const barbeiro = await Barbeiro.findById(usuarioId);
         if (barbeiro == null) {
             console.log('usuario is undefined! Bad usuarioID!');
-            res.sendStatus(400);
+            res.status(400).json("usuario is undefined! Bad usuarioID!");
             return;
         }
 
@@ -121,7 +121,7 @@ const BarbeiroController = {
             } catch (err) {
                 console.log('Error while hashing the password.');
                 console.log(err.message);
-                res.sendStatus(500);
+                res.status(500).json("Error Error Error");
                 return;
             }
 
@@ -137,7 +137,7 @@ const BarbeiroController = {
         barbeiro.description = description || barbeiro.description;
         const savedBarbeiro = await Barbeiro.save(barbeiro);
 
-        res.json(savedBarbeiro);
+        res.status(200).json(savedBarbeiro);
 
         const feedbackEmail: Email = {
             to: auth.email,

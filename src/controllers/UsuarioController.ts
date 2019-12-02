@@ -16,7 +16,7 @@ const UsuarioController = {
         } catch (err) {
             console.log('Error while hashing the password.');
             console.log(err.msg);
-            res.sendStatus(500);
+            res.status(500).json("Error error error");
             return;
         }
 
@@ -40,7 +40,7 @@ const UsuarioController = {
 
         console.log(savedUsuario.toJSON);
 
-        res.sendStatus(200);
+        res.status(200).json(savedUsuario);
 
         const feedbackEmail: Email = {
             to: savedAuth.email,
@@ -59,7 +59,7 @@ const UsuarioController = {
 
         const usuario = await Usuario.findById(usuarioId);
 
-        res.json(usuario);
+        res.status(200).json(usuario);
     },
     atualizarPorId: async (req: Request, res: Response): Promise<void> => {
         const { password, name, birthdate, cep, phone } = req.body;
@@ -70,7 +70,7 @@ const UsuarioController = {
         const usuario = await Usuario.findById(usuarioId);
         if (usuario == null) {
             console.log('usuario is undefined! Bad usuarioID!');
-            res.sendStatus(400);
+            res.status(400).json("usuario is undefined! Bad usuarioID");
             return;
         }
 
@@ -84,7 +84,7 @@ const UsuarioController = {
             } catch (err) {
                 console.log('Error while hashing the password.');
                 console.log(err.message);
-                res.sendStatus(500);
+                res.status(500).json("Error");
                 return;
             }
 
@@ -98,7 +98,7 @@ const UsuarioController = {
         usuario.phone = phone || usuario.phone;
         const savedUsuario = await Usuario.save(usuario);
 
-        res.json(savedUsuario);
+        res.status(200).json(savedUsuario);
 
         const feedbackEmail: Email = {
             to: auth.email,
