@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 
+import moment from 'moment';
+
 import crypto from '../utils/Crypto';
 import { enviaEmail, Email } from '../utils/Emailer';
 
@@ -56,7 +58,7 @@ const CorteController = {
 
         res.status(200).json(cortes);
     },
-    retornarPorUsuarioEStatus: async (req: Request, res: Response): Promise<void> => {
+    retornarPorUsuarioEstatus: async (req: Request, res: Response): Promise<void> => {
         const { usuarioId, status } = req.params;
 
         const cortes = await Corte.finfByUsuarioEStatus(status, usuarioId);
@@ -65,19 +67,38 @@ const CorteController = {
 
         const response = await Promise.all(promises).then();
 
-        res.status(200).json({response, cortes});
-    },  
-    
+        const treatedData = cortes.map((corte, index) => {
+            const formatedDate = moment(corte.horarioCorte)
+                .locale('pt-BR')
+                .format('DD/MM/YYYY');
+
+            const extendedCorte = {
+                barbeiroId: corte.barbeiroId,
+                barbeiroName: response[index].name,
+                usuarioId: corte.usuarioId,
+                fotosId: corte.fotosId,
+                avalicao: corte.avalicao,
+                status: corte.status,
+                horarioCorte: corte.horarioCorte,
+                horarioFormatado: formatedDate,
+            };
+
+            return extendedCorte;
+        });
+
+        res.status(200).json({ cortes: treatedData });
+    },
+
     atualizarPorId: async (req: Request, res: Response): Promise<void> => {
-        const { avaliacao, status} = req.body;
+        const { avaliacao, status } = req.body;
         const { corteId } = req.params;
 
         const corte = await Corte.findById(corteId);
 
-        if(corte.avalicao == -1){
+        if (corte.avalicao == -1) {
             corte.avalicao = avaliacao || corte.avalicao;
         }
-        
+
         corte.status = status || corte.status;
 
         const savedCorte = await Corte.save(corte);
