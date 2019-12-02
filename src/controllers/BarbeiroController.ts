@@ -77,7 +77,6 @@ const BarbeiroController = {
         await enviaEmail(feedbackEmail);
     },
     retornar: async (req: Request, res: Response): Promise<void> => {
-
         const barbeiros = await Barbeiro.findAll();
 
         res.json(barbeiros);
@@ -153,7 +152,7 @@ const BarbeiroController = {
                 Respeitosamente,<br>
                 Equipe do Full Coffee Overflow
             `,
-        };  
+        };
         await enviaEmail(feedbackEmail);
     },
 };
