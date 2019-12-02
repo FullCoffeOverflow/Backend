@@ -49,7 +49,7 @@ const ImageController = {
         res.json(imgsProcessed);
     },
     getByBarbeiro: async (req: Request, res: Response): Promise<void> => {
-        const { barbeiroId } = req.body;
+        const { barbeiroId } = req.params;
 
         console.log('barbeiroId: ' + barbeiroId);
 
