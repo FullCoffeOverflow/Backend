@@ -9,6 +9,8 @@ const router = Router();
 
 router.post('/saveImage/:corteId', [checkJwt, imageParser], ImageController.saveImage);
 
-router.get('/getImage', [checkJwt], ImageController.getByUsuario);
+router.get('/getImageByUsuario', [checkJwt], ImageController.getByUsuario);
+
+router.get('/getImageByBarbeiro', [checkJwt], ImageController.getByBarbeiro);
 
 export default router;

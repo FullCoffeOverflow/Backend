@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 import S3 from '../config/AwsConfig';
 
 import Image, { ImageCollection, ImageModel } from '../models/ImageModel';
+import Corte from '../models/CorteModel';
 
 const ImageController = {
     saveImage: async (req: Request, res: Response): Promise<void> => {
@@ -27,6 +28,10 @@ const ImageController = {
 
             const savedImg = await Image.save(img);
 
+            const corte = await Corte.findById(savedImg.corteId);
+            corte.fotosId.push(savedImg.linkFoto);
+            await Corte.save(corte);
+
             res.status(200).send(savedImg);
         } catch (err) {
             console.log('Error occured while saving in S3 or while saving in MongoDB', err);
@@ -39,6 +44,16 @@ const ImageController = {
         console.log('email: ' + email);
 
         const imgs = await Image.findByUsuario(email);
+        const imgsProcessed = imgs.reduce((acc, cur) => acc.concat(cur));
+
+        res.json(imgsProcessed);
+    },
+    getByBarbeiro: async (req: Request, res: Response): Promise<void> => {
+        const { barbeiroId } = req.body;
+
+        console.log('barbeiroId: ' + barbeiroId);
+
+        const imgs = await Image.findByBarbeiro(barbeiroId);
         const imgsProcessed = imgs.reduce((acc, cur) => acc.concat(cur));
 
         res.json(imgsProcessed);

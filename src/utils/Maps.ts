@@ -30,6 +30,8 @@ const getDistances = async (origin: MapsResponse, destinations: MapsResponse[]):
 const getLatLgn = async (query: MapsQuery): Promise<MapsResponse> => {
     const response = await mapsClient.geocode(query).asPromise();
 
+    console.log(`${response.status}`);
+
     return response.json.results[0].geometry.location;
 };
 

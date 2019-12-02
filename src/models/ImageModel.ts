@@ -39,6 +39,15 @@ const ImageActions = {
 
         return Promise.all(imgsPromises).then();
     },
+    findByBarbeiro: async (barbeiroId: string): Promise<ImageModel[][]> => {
+        const cortes = await Corte.findByBarbeiro(barbeiroId);
+
+        const imgsPromises = cortes.map(corte => ImageCollection.find({ corteId: corte.id }).then());
+
+        console.log(imgsPromises);
+
+        return Promise.all(imgsPromises).then();
+    },
     save: (image: ImageModel): Promise<ImageModel> => {
         return image.save().then();
     },
