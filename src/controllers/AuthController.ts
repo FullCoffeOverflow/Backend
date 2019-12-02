@@ -5,6 +5,9 @@ import configs from '../config/Config';
 import crypto from '../utils/Crypto';
 
 import Auth, { AuthModel } from '../models/AuthModel';
+import Barbeiro, { BarbeiroModel } from '../models/BarbeiroModel';
+import Usuario, { UsuarioModel } from '../models/UsuarioModel';
+import { awaitExpression } from '@babel/types';
 
 const AuthController = {
     login: async (req: Request, res: Response): Promise<void> => {
@@ -39,13 +42,22 @@ const AuthController = {
                 authId: auth.id,
                 email: auth.email,
                 role: auth.role,
-            },
+            },  
             configs.JWT_SECRET,
             { expiresIn: '1h' },
         );
 
-        //Send the jwt in the response
-        res.status(200).json({ token, authId: auth.id });
+        let barbeiro: BarbeiroModel;
+        let usuario: UsuarioModel;
+
+        try {
+            barbeiro = await Barbeiro.findByAuthId(auth.id);
+            res.status(200).json({ token, barbeiroId: barbeiro.id });
+        } catch (err) {
+            usuario = await Usuario.findByAuthId(auth.id);
+            res.status(200).json({ token, usuarioId: usuario.id });
+        }
+
     },
 
     changePassword: async (req: Request, res: Response): Promise<void> => {
