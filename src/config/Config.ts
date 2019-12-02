@@ -33,6 +33,10 @@ if (process.env.BUCKET_NAME === undefined)
     throw new Error('BUCKET_NAME is required in process.env variables. Check the .env file needed.');
 const BUCKET_NAME = process.env.BUCKET_NAME;
 
+if (process.env.MAPS_API_KEY === undefined)
+    throw new Error('MAPS_API_KEY is required in process.env variables. Check the .env file needed.');
+const MAPS_API_KEY = process.env.MAPS_API_KEY;
+
 const configs = {
     PORT,
     MONGO_URI,
@@ -42,6 +46,7 @@ const configs = {
     AWS_SECRETACCESSKEY,
     AWS_REGION,
     BUCKET_NAME,
+    MAPS_API_KEY,
 };
 
 export default configs;
