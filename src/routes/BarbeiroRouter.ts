@@ -11,4 +11,6 @@ router.get('/:barbeiroId', BarbeiroController.retornarPorId);
 router.delete('/:barbeiroId', BarbeiroController.deletarPorId);
 router.put('/:usuarioId', [checkJwt], BarbeiroController.atualizarPorId);
 
+router.get('/byDistance/:usuarioId', BarbeiroController.retornaBarbeirosByDistance);
+
 export default router;
