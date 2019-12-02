@@ -45,7 +45,7 @@ const AuthController = {
         );
 
         //Send the jwt in the response
-        res.status(200).json({ token });
+        res.status(200).json({ token, authId: auth.id });
     },
 
     changePassword: async (req: Request, res: Response): Promise<void> => {
