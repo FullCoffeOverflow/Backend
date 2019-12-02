@@ -9,7 +9,7 @@ import Barbeiro, { BarbeiroModel, BarbeiroCollection } from '../models/BarbeiroM
 const BarbeiroController = {
     cadastrar: async (req: Request, res: Response): Promise<void> => {
         const { email, password, name, birthdate, cep, phone, number, description } = req.body;
-      
+
         let hashedPassword: string;
         try {
             hashedPassword = await crypto.hashing(password);
@@ -24,9 +24,9 @@ const BarbeiroController = {
             email,
             password: hashedPassword,
             role: AUTH_ROLES.USUARIO,
-        }); 
+        });
 
-        let newBarbeiro: BarbeiroModel = new BarbeiroCollection({
+        const newBarbeiro: BarbeiroModel = new BarbeiroCollection({
             authId: '',
             name,
             birthdate,
@@ -36,7 +36,16 @@ const BarbeiroController = {
             description,
         });
 
-        const savedAuth = await Auth.save(newAuth);
+        let savedAuth: AuthModel;
+
+        try {
+            savedAuth = await Auth.save(newAuth);
+        } catch (err) {
+            console.log('Error while saving new auth.');
+            console.log(err.message);
+            res.sendStatus(400);
+            return;
+        }
 
         let savedBarbeiro: BarbeiroModel;
 

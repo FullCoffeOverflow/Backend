@@ -25,9 +25,9 @@ const ImageController = {
                 linkFoto: response.Location,
             });
 
-            await Image.save(img);
+            const savedImg = await Image.save(img);
 
-            res.sendStatus(200);
+            res.status(200).send(savedImg);
         } catch (err) {
             console.log('Error occured while saving in S3 or while saving in MongoDB', err);
             res.sendStatus(500);
