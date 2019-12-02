@@ -11,6 +11,6 @@ router.post('/saveImage/:corteId', [checkJwt, imageParser], ImageController.save
 
 router.get('/getImageByUsuario', [checkJwt], ImageController.getByUsuario);
 
-router.get('/getImageByBarbeiro', [checkJwt], ImageController.getByBarbeiro);
+router.get('/getImageByBarbeiro/:barbeiroId', [checkJwt], ImageController.getByBarbeiro);
 
 export default router;
