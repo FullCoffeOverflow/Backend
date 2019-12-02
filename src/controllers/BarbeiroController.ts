@@ -2,9 +2,11 @@ import { Request, Response } from 'express';
 
 import crypto from '../utils/Crypto';
 import { enviaEmail, Email } from '../utils/Emailer';
+import { getLatLgn, MapsQuery, getDistances } from '../utils/Maps';
 
 import Auth, { AUTH_ROLES, AuthModel, AuthCollection } from '../models/AuthModel';
 import Barbeiro, { BarbeiroModel, BarbeiroCollection } from '../models/BarbeiroModel';
+import Usuario from '../models/UsuarioModel';
 
 const BarbeiroController = {
     cadastrar: async (req: Request, res: Response): Promise<void> => {
@@ -154,6 +156,46 @@ const BarbeiroController = {
             `,
         };
         await enviaEmail(feedbackEmail);
+    },
+    retornaBarbeirosByDistance: async (req: Request, res: Response): Promise<void> => {
+        const { usuarioId } = req.params;
+
+        const user = await Usuario.findById(usuarioId);
+
+        const queryUser: MapsQuery = {
+            address: user.cep,
+        };
+        const userCoordinates = await getLatLgn(queryUser);
+
+        console.log(userCoordinates);
+
+        const allBarbeiros = await Barbeiro.findAll();
+
+        const coordinatesPromises = allBarbeiros.map(async barbeiro => {
+            const queryBerbeiro: MapsQuery = {
+                address: barbeiro.cep,
+            };
+
+            const coordinates = await getLatLgn(queryBerbeiro);
+
+            return coordinates;
+        });
+
+        const coordinates = await Promise.all(coordinatesPromises).then();
+
+        const distances = await getDistances(userCoordinates, coordinates);
+
+        const sorted = allBarbeiros
+            .map((barbeiro, index) => {
+                return {
+                    barbeiro: barbeiro,
+                    distance: distances[index].distance,
+                    duration: distances[index].duration,
+                };
+            })
+            .sort((elem1, elem2) => elem1.distance.value - elem2.distance.value);
+
+        res.status(200).json(sorted);
     },
 };
 
